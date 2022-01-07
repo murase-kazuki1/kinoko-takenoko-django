@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+  <html lang="ja">
+    <head>
+      <meta charset="utf-8">
+      <title>きのこ vs たけのこ 投票サイト</title>
+      <link href="{% static 'kinotake/css/default.css' %}" rel="stylesheet">
+    </head>
+    <body>
+    <h1>きのこ vs たけのこ</h1>
+    <p>君はどっち？</p>
+    <form action="{% url 'vote' %}" method="post">
+      {% csrf_token %}
+      <div>
+        <input type="radio" name="item" id="item_kinoko" value="kinoko">
+        <label for="item_kinoko">きのこ &#x1f344;</label>
+      </div>
+      <div>
+        <input type="radio" name="item" id="item_takenoko" value="takenoko">
+        <label for="item_takenoko">たけのこ &#x1f38d;</label>
+     </div>
+     <div>
+       <label for="message">応援メッセージ</label>
+       <input type="text" name="message" id="message">
+     </div>
+     <button type="submit">投票</button>
+    </form>
+  </body>
+</html>

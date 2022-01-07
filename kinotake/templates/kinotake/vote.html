@@ -1,0 +1,27 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>投票ありがとうございました。</title>
+    <link href="{% static 'kinotake/css/default.css' %}" rel="stylesheet">
+  </head>
+  <body>
+   <h1>投票ありがとうございました。</h1>
+   <div id="count">
+    <h2 id="kinoko">きのこ &#x1f344; {{ kinoko_cnt }} 票</h2>
+    <h2 id="takenoko">たけのこ &#x1f38d; {{ takenoko_cnt }} 票</h2> 
+   </div>
+   {% for item in results %}
+   {% if item.comment %}
+   {% if item.target == 1 %}
+   <div class="comment-kinoko">{{ item.comment }}</div>
+   {% else %}
+   <div class="comment-takenoko">{{ item.comment }}</div>
+   {% endif %}
+   {% endif %}
+   {% endfor %}
+   <hr>
+   <a href="{% url 'index' %}">もどる</a>
+  </body>
+</html>

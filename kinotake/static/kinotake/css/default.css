@@ -1,0 +1,50 @@
+body {
+    font-family: sans-serif;
+}
+h1 {
+    border-bottom: solid 1px #17194c;
+    text-align: center;
+}
+h2 {
+    text-align: center;
+}
+form {
+    border: solid 1px #aaaaaa;
+    background-color: #eeeeee;
+    padding: 10px;
+}
+#message {
+    margin: 10px;
+    padding: 10px;
+    border: solid 1px #aaaaaa;
+    width: 80%;
+}
+#count {
+    display: flex;
+}
+#kinoko {
+    margin: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #ffddaa;
+}
+#takenoko {
+    margin: 10px;
+    padding: 10px;
+    width: 100%;
+    background-color: #ddffaa;
+}
+.comment-kinoko {
+    margin: 10px 100px 10px 40px;
+    padding: 10px;
+    background-color: #ffddaa;
+    border-radius: 10px;
+    box-shadow: 4px 4px 4px #aaaaaa;
+}
+.comment-takenoko {
+    margin: 10px 40px 10px 100px;
+    padding: 10px;
+    background-color: #ddffaa;
+    border-radius: 10px;
+    box-shadow: 4px 4px 4px #aaaaaa;
+}
