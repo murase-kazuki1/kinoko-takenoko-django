@@ -1,0 +1,171 @@
+apiVersion: v1
+data:
+  default.conf: |
+    server {
+        listen      80;
+        server_name _;
+
+        location = /hello {
+            empty_gif;
+            access_log off;
+        }
+
+        location / {
+            proxy_set_header Host $host;
+            proxy_pass http://127.0.0.1:8000;
+        }
+    }
+kind: ConfigMap
+metadata:
+  name: nginx-conf-2m7769gtb2
+  namespace: default
+---
+apiVersion: v1
+data:
+  database_password: ZGF0YWJhc2VfcGFzc3dvcmQ=
+  database_user: ZGF0YWJhc2VfdXNlcg==
+  secret_key_base: c2VjcmV0X2tleV9iYXNl
+kind: Secret
+metadata:
+  name: django
+  namespace: default
+type: Opaque
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  labels:
+    type: local
+  name: postgresql-pv
+spec:
+  accessModes:
+  - ReadWriteOnce
+  capacity:
+    storage: 20Gi
+  hostPath:
+    path: /var/lib/postgresql
+  storageClassName: manual
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgresql-pv-claim
+  namespace: default
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
+  storageClassName: manual
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kinoko-takenoko-django
+  name: kinoko-takenoko-django
+  namespace: default
+spec:
+  minReadySeconds: 30
+  progressDeadlineSeconds: 600
+  replicas: 3
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: kinoko-takenoko-django
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: kinoko-takenoko-django
+    spec:
+      containers:
+      - image: kinoko-takenoko-django/app-dev:latest
+        imagePullPolicy: Always
+        name: django
+        resources:
+          requests:
+            cpu: 50m
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      - image: nginx:latest
+        imagePullPolicy: Always
+        name: blog-nginx
+        ports:
+        - containerPort: 80
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /hello
+            port: 80
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 1
+        resources:
+          requests:
+            cpu: 4m
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /etc/nginx/conf.d
+          name: nginx-conf
+          readOnly: true
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - configMap:
+          name: nginx-conf-2m7769gtb2
+        name: nginx-conf
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: postgresql
+  name: postgresql
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgresql
+  template:
+    metadata:
+      labels:
+        app: postgresql
+    spec:
+      containers:
+      - env:
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              key: database_user
+              name: django
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: database_password
+              name: django
+        image: postgres:9.6-alpine
+        name: postgresql
+        ports:
+        - containerPort: 5432
+          name: postgresql
+        volumeMounts:
+        - mountPath: /var/lib/postgresql
+          name: postgresql-persistent-storage
+      volumes:
+      - name: postgresql-persistent-storage
+        persistentVolumeClaim:
+          claimName: postgresql-pv-claim

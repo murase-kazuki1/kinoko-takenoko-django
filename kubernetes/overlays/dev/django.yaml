@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: kinoko-takenoko-django
+  name: kinoko-takenoko-django
+  namespace: default
+spec:
+  # podの中に含めるコンテナのリスト
+  template:
+    spec:
+      containers:
+      - image: kinoko-takenoko-django/app-dev:latest
+        name: django
+        resources:
+          requests:
+            cpu: 50m

@@ -1,0 +1,12 @@
+apiVersion: skaffold/v1alpha5
+kind: config
+build:
+  tagPolicy:
+    sha256: {}
+  artifacts:
+  - image: kinoko-takenoko-django/app-dev
+  local:
+    push: false
+deploy:
+  kustomize:
+    path: kubernetes/overlays/dev
