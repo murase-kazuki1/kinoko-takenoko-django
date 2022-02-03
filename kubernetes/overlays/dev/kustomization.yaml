@@ -6,6 +6,7 @@ bases:
 patches:
   - django.yaml
 resources:
+  - django-service.yaml
   - postgresql-pv.yaml
   - postgresql-pvc.yaml
   - postgresql-service.yaml
