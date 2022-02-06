@@ -14,9 +14,9 @@ env:
   DOCKER_CONFIG: '${{ github.workspace }}/.docker'
   MANAGED_IDENTITY_CLIENT_ID: ''
 
-  TEST_IMAGE_NAME: 'proxy.trendmicro:5000/shinseidx/densin-apache:${{ github.sha }}'
-  CACHE_IMAGE_NAME: 'proxy.trendmicro:5000/shinseidx/densin-apache:cache'
-  PUSH_IMAGE_NAME: 'pjpeshinseidxacr.azurecr.io/densin-apache:1.0.9'
+  TEST_IMAGE_NAME: ''
+  CACHE_IMAGE_NAME: ''
+  PUSH_IMAGE_NAME: ''
 
 jobs:
   test:
@@ -32,12 +32,13 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r docker/python/requirements.txt
     - name: Django app url shortner test
-      run: python djangoserver/manage.py test urlshortner
+      run: python manage.py test urlshortner
       env:
         DB_HOST: 127.0.0.1
         DB_PASSWORD: postgres
         DB_USER: postgres
         REDIRECT_DOMAINS: red.localhost:3000/
+
   hadolint:
     runs-on: ubuntu-latest
     steps:
