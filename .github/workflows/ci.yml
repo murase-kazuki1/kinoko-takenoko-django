@@ -12,7 +12,7 @@ on:
 
 env:
   DOCKER_CONFIG: '${{ github.workspace }}/.docker'
-  MANAGED_IDENTITY_CLIENT_ID: '1d9589c5-9f66-400a-8733-c0cb657dc0ed'
+  MANAGED_IDENTITY_CLIENT_ID: ''
 
   TEST_IMAGE_NAME: 'proxy.trendmicro:5000/shinseidx/densin-apache:${{ github.sha }}'
   CACHE_IMAGE_NAME: 'proxy.trendmicro:5000/shinseidx/densin-apache:cache'
