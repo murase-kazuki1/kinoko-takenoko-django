@@ -12,6 +12,16 @@ spec:
       containers:
       - image: kinoko-takenoko-django/app-dev:latest
         name: django
+        env:
+        - name: DATABASE_USER
+          value: "postgres"
+        - name: DATABASE_PASSWORD
+          value: "password"
+        - name: DATABASE_NAME
+          value: "postgres"
+        envFrom:
+        - configMapRef:
+            name: django-env
         resources:
           requests:
             cpu: 50m

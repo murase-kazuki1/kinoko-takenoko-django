@@ -1,0 +1,3 @@
+failure-threshold: warning
+ignored:
+  # パッケージのバージョン指定も妥協する

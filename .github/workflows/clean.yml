@@ -1,0 +1,15 @@
+name: Clean Docker Daemon
+
+on:
+  schedule:
+    - cron: '0 1 * * *'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: [self-hosted, Linux, X64]
+    steps:
+      - name: Clean daemon
+        run: |
+          docker system prune --force
+          docker run busybox rm -fR .azure .trivy

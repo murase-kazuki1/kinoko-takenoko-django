@@ -15,19 +15,15 @@ spec:
         app: postgresql
     spec:
       containers:
-      - image: postgres:9.6-alpine
+      - image: postgres:10.19-alpine
         name: postgresql
         env:
-        - name: POSTGRES_USER
-          valueFrom:
-            secretKeyRef:
-              name: django
-              key: database_user
         - name: POSTGRES_PASSWORD
-          valueFrom:
-            secretKeyRef:
-              name: django
-              key: database_password
+          value: "password"
+          # valueFrom:
+          #   secretKeyRef:
+          #     name: django
+          #     key: database_password
         ports:
         - containerPort: 5432
           name: postgresql

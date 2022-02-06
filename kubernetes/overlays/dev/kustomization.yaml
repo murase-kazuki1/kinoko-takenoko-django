@@ -6,9 +6,11 @@ bases:
 patches:
   - django.yaml
 resources:
+  - django.configmap.yaml
   - django-service.yaml
   - postgresql-pv.yaml
   - postgresql-pvc.yaml
   - postgresql-service.yaml
   - postgresql.yaml
   - secret.yaml
+  - django.job.yaml

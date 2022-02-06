@@ -12,6 +12,11 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -70,18 +75,19 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'config.wsgi.application'
 
+ALLOWED_HOSTS = ['*']
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'myblog',
-        'USER': 'meiji',
-        'PASSWORD': 'curl',
-        'HOST': '172.30.224.3',
-        'PORT': 5432,
+        'ENGINE': os.getenv('DATABASE_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.getenv('DATABASE_NAME', 'myblog'),
+        'USER': os.getenv('DATABASE_USER', 'meiji'),
+        'PASSWORD': os.getenv('DATABASE_PASSWORD', 'curl'),
+        'HOST': os.getenv('DATABASE_HOST', '172.30.224.3'),
+        'PORT': os.getenv('DATABASE_PORT', 5432),
     }
 }
 

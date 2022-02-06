@@ -10,3 +10,15 @@ spec:
     - port: 5432
   selector:
     app: postgresql
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgresql-service
+spec:
+  ports:
+  - port: 5432
+    nodePort: 30432
+  selector:
+    app: postgresql
+  type: NodePort
