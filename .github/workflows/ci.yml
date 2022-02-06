@@ -34,9 +34,8 @@ jobs:
     - name: Django app url shortner test
       run: python manage.py test urlshortner
       env:
-        DB_HOST: 127.0.0.1
-        DB_PASSWORD: postgres
-        DB_USER: postgres
+        DATABASE_ENGINE: django.db.backends.sqlite3
+        DATABASE_NAME: postgres
         REDIRECT_DOMAINS: red.localhost:3000/
 
   hadolint:
